@@ -81,7 +81,10 @@ app.delete('/deleteuser/:id', (req, res) => {
 app.get('/count/:department', (req, res) => {
   const department = req.params.department; // Get department from request parameters
 
-  UserModel.countDocuments({ department: department }) // Count users in department
+  // Use a regular expression for case-insensitive and less specific match
+  const departmentRegex = new RegExp(department, 'i');
+
+  UserModel.countDocuments({ department: departmentRegex }) // Count users in department
     .then(count => res.json({ department: department, studentCount: count })) // Send count as response
     .catch(err => res.json(err)); // Send error as response
 });
